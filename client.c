@@ -35,6 +35,6 @@ int main()
   printf("The server sent the data : %s\n", server_response);
 
   //END THE CLOSE THE SOCKET
-  close(network_sock);
+  close(network_socket);
   return 0;
 }
