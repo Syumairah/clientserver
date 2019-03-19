@@ -5,6 +5,7 @@
 #include <sys/socket.h>
 
 #include <netinet/in.h>
+#include <unistd.h>
 
 int main()
 {
@@ -16,7 +17,7 @@ int main()
   struct sockaddr_in server_address;
   server_address.sin_family = AF_INET;
   server_address.sin_port = htons (9302);
-  server_address.sin_address.s_addr = INADOR_ANY;
+  server_address.sin_address.s_addr = INADDR_ANY;
 
   int connection_status = connect (network_socket, (struct sockaddr*) &server_address, sizeof (server_address));
   
@@ -34,6 +35,6 @@ int main()
   printf("The server sent the data : %s\n", server_response);
 
   //END THE CLOSE THE SOCKET
-  close(network_sock);
+  close(network_socket);
   return 0;
 }
