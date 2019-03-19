@@ -17,7 +17,7 @@ int main()
   struct sockaddr_in server_address;
   server_address.sin_family = AF_INET;
   server_address.sin_port = htons (9302);
-  server_address.s_addr.s_addr = INADDR_ANY;
+  server_address.sin_addr = INADDR_ANY;
 
   int connection_status = connect (network_socket, (struct sockaddr*) &server_address, sizeof (server_address));
   
@@ -29,7 +29,7 @@ int main()
 
   //RECEIVE DATA FROM SERVER 
   char server_response[256];
-  recv(network_socket, &server_response, sizeof(server_response, 0), 0);
+  recv(network_socket, &server_response, sizeof(server_response, 0);
 
   // PRINT OUT THE SERVER'S RESPONSE
   printf("The server sent the data : %s\n", server_response);
