@@ -15,9 +15,10 @@ int main()
 
   // SPECIFY AN ADDRESS FOR THE SOCKET
   struct sockaddr_in server_address;
-  server_address.sin_family = AF_INET;
-  server_address.sin_port = htons (9302);
-  server_address.sin_address = INADDR_ANY;
+  addr.sin_family = AF_INET;
+  addr.sin_port = htons (9302);
+  addr.sin_addr.s_addr = 0;
+  addr.sin_addr.s_addr = INADDR_ANY;
 
   int connection_status = connect (network_socket, (struct sockaddr*) &server_address, sizeof (server_address));
   
