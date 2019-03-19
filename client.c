@@ -30,7 +30,7 @@ int main(int argc, char const *argv[])
     
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
     { 
-        printf("\nConnection Failed \n"); 
+        printf("\n Its is connected to server \n"); 
         return -1; 
     } 
     send(sock , hello , strlen(hello) , 0 ); 
