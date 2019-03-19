@@ -1,41 +1,54 @@
 #include <stdio.h>
-#include <stdlib.h>
-
+#include <string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-
+#include <netdb.h>
+#include <arpa/inet.h>
 #include <netinet/in.h>
-#include <unistd.h>
 
-int main()
+int main(int argc, char *argv[])
 {
-  // CREATE A SOCKET
-  int network_socket;
-  network_socket = socket (AF_INET, SOCK_STREAM, 0);
+    // code for a client connecting to a server
+    // namely a stream socket to www.example.com on port 80 (http)
+    // either IPv4 or IPv6
+    
+    int sockfd;
+    struct addrinfo hints, *servinfo, *p;
+    int rv;
+    memset (&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET; // use AF_INET6 to force IPv6
+    hints.ai_socktype = SOCK_STREAM;
+    if ((rv = getaddrinfo("192.168.2.4", "50000", &hints, &servinfo)) != 0) 
+    {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        exit(1);
+    }
+    // loop through all the results and connect to the first we can
+    for(p = servinfo; p != NULL; p = p->ai_next)
+    {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype,
+        p->ai_protocol)) == -1) 
+        {
+            perror("socket");
 
-  // SPECIFY AN ADDRESS FOR THE SOCKET
-  struct sockaddr_in server_address;
-  server_address.sin_family = AF_INET;
-  server_address.sin_port = htons (9302);
-  server_address.sin_addr.s_addr = 0;
-  server_address.sin_addr.s_addr = INADDR_ANY;
+        continue;
+        }
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) 
+        {
+            close(sockfd);
+            perror("connected");
+            continue;
+        }
+        break; // if we get here, we must have connected successfully
+    }
 
-  int connection_status = connect (network_socket, (struct sockaddr*) &server_address, sizeof (server_address));
-  
-  //CHECK FOR ERROR WITH CONNECTION
-  if (connection_status == -1)
-  {
-    printf ("There was an error making a connection to the remote socket \n\n");
-  }
+    if (p == NULL)
+    {
+        // looped off the end of the list with no connection
+        fprintf(stderr, "failed to connect\n");
+        exit(2);
+    }
 
-  //RECEIVE DATA FROM SERVER 
-  char server_response[256];
-  recv(network_socket, &server_response, sizeof(server_response, 0), 0);
+    freeaddrinfo(servinfo); // all done with this structure
 
-  // PRINT OUT THE SERVER'S RESPONSE
-  printf("The server sent the data : %s\n", server_response);
-
-  //END THE CLOSE THE SOCKET
-  close(network_socket);
-  return 0;
 }
