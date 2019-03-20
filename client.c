@@ -34,7 +34,7 @@ int main(int argc, char const *argv[])
         return -1; 
     } 
     send(sock , Annyeonghasaeyo , strlen(Annyeonghasaeyo) , 0 ); 
-    printf("Annyeonghasaeyo message sent\n"); 
+    printf("Annyeonghasaeyo,server! \n"); 
     valread = read ( sock , buffer, 1024); 
     printf("%s\n",buffer ); 
     return 0; 
