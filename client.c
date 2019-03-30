@@ -14,6 +14,7 @@ int main()
     serv_addr.sin_family = AF_INET; 
     serv_addr.sin_port = htons(5132);
     serv_addr.sin_addr.s_addr = ip address;
+   
     char serverMsg[1024] = "Hello yaww"; 
     
     int status = connect(network_socket,(struct sockaddr *) &server_address, sizeof(server_address));
